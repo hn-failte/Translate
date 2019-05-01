@@ -1,0 +1,17 @@
+{
+  "name": "translate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "baidu-translate-api": "^0.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "start http://127.0.0.1:3000/ && node ./index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

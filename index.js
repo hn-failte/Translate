@@ -1,26 +1,53 @@
-const http = require('http');
-const {URL, URLSearchParams} = require('url');
-const fs = require('fs');
-const translate = require("baidu-translate-api");
+var type = null;
+var li = null;
+var from_content = "",to_content = "";
+var origin_val = "auto",target_val = "zh";
 
-
-var server = http.createServer(function(req,res){
-    res.setHeader("Content-type","text/html;charset=utf8");
-    var url = new URL(req.url, 'http://127.0.0.1:3000');
-    var search = new URLSearchParams(url.search);
-    if(url.pathname==="/index.js/t"){
-        translate(search.get("key"), {
-            from: search.get("from"),
-            to: search.get("to")
-        }).then(done => {
-            console.log(search.get("key"), '   ', done.trans_result.dst);
-            res.end(done.trans_result.dst);
-        });
-    }
-    else{
-        fs.readFile(__dirname+'/index.html', 'utf8', function(err, data){
-            res.end(data);
-        })
-    }
+$().ready(function(){
+    $.ajax({
+        url: "t/k",
+        dataType: "json",
+        success: function(res){
+            localStorage.setItem("type", res);
+            init();
+        }
+    });
 });
-server.listen(3000)
+
+function init(){
+    type = JSON.parse(localStorage.getItem("type"));
+    for(var item in type){
+        li = "<li><a href='javascript: void(0);' onclick='fromLang(this)' lang='"+item+"'>"+type[item]+"</a></li>"
+        from_content += li;
+    }
+    $("#from-list").html(from_content);
+    $('#origin').html(type.auto + " <span class='caret'></span>");
+
+    for(var item in type){
+        li = "<li><a href='javascript: void(0);' onclick='toLang(this)' lang='"+item+"'>"+type[item]+"</a></li>"
+        to_content += li;
+    }
+    $("#to-list").html(to_content);
+    $('#target').html(type.zh + " <span class='caret'></span>");
+}
+
+function fromLang(el){
+    origin_val = $(el).attr('lang');
+    $('#origin').html(type[origin_val] + " <span class='caret'></span>");
+}
+
+function toLang(el){
+    target_val = $(el).attr('lang');
+    $('#target').html(type[target_val] + " <span class='caret'></span>");
+}
+
+$('#start').click(function(){
+    $.ajax({
+        url: "t/q",
+        method: "get",
+        data: 'key=' + $('#enterance').val() + '&from=' + origin_val + '&to=' + target_val,
+        success: function(res){
+            $("#result").val(res);
+        }
+    })
+})

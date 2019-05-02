@@ -9,7 +9,9 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "start http://127.0.0.1:3000/ && node ./index.js"
+    "start": "start.cmd",
+    "stop": "stop.cmd",
+    "restart": "restart.cmd"
   },
   "keywords": [],
   "author": "",

@@ -7,15 +7,10 @@
     <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <title>星辰翻译</title>
-    <style>
-        body{
-            background: #fefefe;
-        }
-    </style>
-</head>
-<body class="container-fluid">
-    <h1 class=".h1 text-center text-info">星辰翻译</h1>
+    <link rel="stylesheet" href="./index.css">
+    <title>星辰翻译</title></head>
+<body class="container">
+    <h1 class="h1 text-center text-info">星辰翻译</h1>
     <div class="jumbotron">
         <div class="input-group">
             <span class="input-group-btn text-left">
@@ -36,87 +31,18 @@
                 <ul class="dropdown-menu" id="to-list"></ul>
             </span>
         </div>
-        <textarea id="result" style="width: 100%; height: 8em;"></textarea>
+        <textarea id="result"></textarea>
+    </div>
+    <div class="music">
+        <img src="./music.png">
+        <audio src="./music.mp3" controls="controls" preload="none"></audio>
+    </div>
+    <div>
+        <span>BUG反馈：</span>
+        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=690887684&site=qq&menu=yes"><img border="0"
+        src="http://wpa.qq.com/pa?p=2:690887684:41" alt="点击这里给我发消息" title="点击这里给我发消息" /></a>
+        <a href="mailto:failte@163.com"><img src="./mail.png" width="30" height="20"></a>
     </div>
 </body>
-<script>
-    var type = {
-        "auto": "自动检测",
-        "zh": "中文",
-        "en": "英文",
-        "yue": "粤语",
-        "wyw": "文言文",
-        "jp": "日语",
-        "kor": "韩语",
-        "fra": "法语",
-        "spa": "西班牙语",
-        "th": "泰语",
-        "ara": "阿拉伯语",
-        "ru": "俄语",
-        "pt": "葡萄牙语",
-        "de": "德语",
-        "it": "意大利语",
-        "el": "希腊语",
-        "nl": "荷兰语",
-        "pl": "波兰语",
-        "bul": "保加利亚语",
-        "est": "爱沙尼亚语",
-        "dan": "丹麦语",
-        "fin": "芬兰语",
-        "cs": "捷克语",
-        "rom": "罗马尼亚语",
-        "slo": "斯洛文尼亚语",
-        "swe": "瑞典语",
-        "hu": "匈牙利语",
-        "cht": "繁体中文",
-        "vie": "越南语"
-    }
-
-    var enterance = document.getElementById('enterance');
-    var start = document.getElementById('start');
-    var result = document.getElementById('result');
-    var origin = document.getElementById('origin');
-    var target = document.getElementById('target');
-    var from_list = document.getElementById("from-list");
-    var to_list = document.getElementById("to-list");
-    var from_content = "";
-    var to_content = "";
-    var li = null;
-    var origin_val = "auto";
-    var target_val = "zh";
-    for(var item in type){
-        li = "<li><a href='javascript: void(0);' onclick='fromLang(this)' lang='"+item+"'>"+type[item]+"</a></li>"
-        from_content += li;
-    }
-    from_list.innerHTML = from_content;
-    origin.innerHTML = type.auto + "<span class='caret'></span>";
-
-    for(var item in type){
-        li = "<li><a href='javascript: void(0);' onclick='toLang(this)' lang='"+item+"'>"+type[item]+"</a></li>"
-        to_content += li;
-    }
-    to_list.innerHTML = to_content;
-    target.innerHTML = type.zh + "<span class='caret'></span>";
-
-    function fromLang(el){
-        origin_val = el.getAttribute('lang');
-        origin.innerHTML = type[origin_val] + "<span class='caret'></span>";
-    }
-
-    function toLang(el){
-        target_val = el.getAttribute('lang');
-        target.innerHTML = type[target_val] + "<span class='caret'></span>";
-    }
-
-    start.onclick = function(){
-        var xhr = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHttp');
-        xhr.onreadystatechange = function(){
-            if(xhr.readyState == 4 && xhr.status == 200){
-                result.value = xhr.responseText;
-            }
-        }
-        xhr.open('get', 'index.js/t?key=' + enterance.value + '&from=' + origin_val + '&to=' + target_val, true);
-        xhr.send(null);
-    }
-</script>
+<script src="index.js"></script>
 </html>

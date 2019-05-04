@@ -2,10 +2,13 @@ var type = null;
 var li = null;
 var from_content = "",to_content = "";
 var origin_val = "auto",target_val = "zh";
+var reg_en = /^[a-zA-Z\s_-]+$/;
+var reg_zh = /^[\u4e00-\u9fa5]+$/;
 
 $().ready(function(){
+    $('#enterance').focus();
     $.ajax({
-        url: "t/k",
+        url: "t/g",
         dataType: "json",
         success: function(res){
             localStorage.setItem("type", res);
@@ -41,13 +44,38 @@ function toLang(el){
     $('#target').html(type[target_val] + " <span class='caret'></span>");
 }
 
+function getRepeat(obj){
+    $.ajax({
+        url: "t/a",
+        type: "get",
+        data: obj,
+        dataType: "json",
+        success: function(res){
+            console.log(res);
+        }
+    })
+}
+
 $('#start').click(function(){
+    var iVal = $('#enterance').val();
     $.ajax({
         url: "t/q",
-        method: "get",
-        data: 'key=' + $('#enterance').val() + '&from=' + origin_val + '&to=' + target_val,
+        type: "get",
+        data: 'key=' + iVal + '&from=' + origin_val + '&to=' + target_val,
+        dataType: "json",
         success: function(res){
-            $("#result").val(res);
+            var dst = res.dst;
+            $("#result").val(dst);
+
+            if(reg_en.test(iVal) && reg_zh.test(dst)){
+                console.log("do");
+                
+                getRepeat({"en": iVal, "zh": dst});
+            }
+            else if(reg_en.test(dst) && reg_zh.test(iVal)){
+                console.log("do2");
+                getRepeat({"en": dst, "zh": iVal});
+            }
         }
     })
 })

@@ -147,10 +147,10 @@ const server = http.createServer(function(req,res){
             }).then(done => {
                 console.log(done);
                 var dst = done.trans_result.dst;
-                res.end(JSON.stringify({"dst": dst}));
+                res.end(JSON.stringify({"state":"1","dst": dst}));
             })
             .catch(function(err){ // 捕获API错误，返回输入值
-                res.end(JSON.stringify({"dst": sKey}));
+                res.end(JSON.stringify({"state":"0","dst": sKey}));
             });
         }
 

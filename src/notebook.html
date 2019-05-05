@@ -7,13 +7,9 @@
     <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- <link rel="stylesheet" href="./notebook.css"> -->
+    <script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
+    <link rel="stylesheet" href="./all.css">
     <title>生词本</title>
-    <style>
-        th{
-            text-align: center;
-        }
-    </style>
 </head>
 <body class="container">
     <h1 class="h1 text-body text-primary text-center">生词本</h1>
@@ -28,85 +24,17 @@
         <tbody id="dynimic"></tbody>
         <tfoot>
             <td class="text-warning"><strong>统计：</strong></td>
-            <td class="text-dark"><strong>累积查词0个</strong></td>
-            <td class="text-dark"><strong>设置重要词0个</strong></td>
-            <td class="text-dark"><strong>搜索重复词0个</strong></td>
+            <td class="text-dark"><strong>当前生词：<span id="count_1">0</span>个</strong></td>
+            <td class="text-dark"><strong>当前重要词：<span id="count_2">0</span>个</strong></td>
+            <td class="text-dark"><strong>当前重复词：<span id="count_3">0</span>个</strong></td>
             <td><a href="javascript: void(0)" class="btn btn-danger" onclick="clearAll()">清空词库</a></td>
         </tfoot>
     </table>
+    <div class="music">
+        <img src="./music.png">
+        <audio src="./music.mp3" controls="controls" preload="none"></audio>
+    </div>
+    <a class="glyphicon glyphicon-home cgbtn" href="./index.html"></a>
 </body>
-<script>
-    $().ready(function(){
-        $.ajax({
-            url: "t/n",
-            type: "get",
-            dataType: "json",
-            success: function(res){
-                fillTable(res);
-            }
-        })
-    })
-
-    function fillTable(arr){
-        var content = "";
-        for (var item of arr) {
-            content += `<tr>
-                        <td>${item["word_key"]}</td>
-                        <td>${item["word_value"]}</td>
-                        <td>${item["word_hard"]}</td>
-                        <td>${item["word_repeat"]}</td>
-                        <td>
-                            <a href="javascript: void(0);" class="btn btn-info" onclick="markData(this)">重要</a>
-                            <a href="javascript: void(0);" class="btn btn-danger" onclick="deleteData(this)">删除</a>
-                        </td>
-                        </tr>`;
-        }
-        $("#dynimic").html(content);
-    }
-
-    function markData(el){
-        $.ajax({
-            url: "t/m",
-            type: "get",
-            data: {"key": $(el).parent().parent().children().eq(0).text(), "flag": $(el).parent().parent().children().eq(2).text()},
-            dataType: "json",
-            success: function(res){
-                if(res["state"]>0){
-                    if(res.data) $(el).parent().parent().children().eq(2).text(1);
-                    else $(el).parent().parent().children().eq(2).text(0);
-                }
-                else alert("标记失败");
-            }
-        })
-    }
-    function deleteData(el){
-        $.ajax({
-            url: "t/d",
-            type: "get",
-            data: {"key": $(el).parent().parent().children().eq(0).text()},
-            dataType: "json",
-            success: function(res){
-                if(res["state"]>0){
-                    $(el).parent().parent().remove();
-                    alert("删除成功");
-                }
-                else alert("删除失败");
-            }
-        })
-    }
-    function clearAll(){
-        $.ajax({
-            url: "t/c",
-            type: "get",
-            dataType: "json",
-            success: function(res){
-                if(res["state"]>0) {
-                    $("#dynimic").html("");
-                    alert("清空成功");
-                }
-                else alert("清空失败");
-            }
-        })
-    }
-</script>
+<script src="./notebook.js"></script>
 </html>
